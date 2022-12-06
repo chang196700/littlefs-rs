@@ -4,3 +4,6 @@ members = [
     "littlefs-rs-sys"
 ]
 resolver = "2"
+
+[patch.crates-io]
+littlefs-rs-sys = { path = "./littlefs-rs-sys" }
