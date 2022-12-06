@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "littlefs-rs",
+    "littlefs-rs-sys"
+]
+resolver = "2"
