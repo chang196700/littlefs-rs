@@ -15,10 +15,18 @@ fn main() -> anyhow::Result<()> {
         .file("littlefs/lfs.c")
         .file("littlefs/lfs_util.c");
 
+    #[cfg(not(feature = "assertions"))]
+        let builder = builder.flag("-DLFS_NO_ASSERT");
+
+    #[cfg(feature = "trace")]
+        let builder = builder.flag("-DLFS_YES_TRACE");
+
     builder.compile("lfs-sys");
 
     let bindings = bindgen::Builder::default()
         .header("littlefs/lfs.h")
+        .allowlist_file("littlefs/lfs.h")
+        .allowlist_file("littlefs/lfs_util.h")
         .clang_arg(format!("--target={}", target))
         .use_core()
         .ctypes_prefix("cty")
