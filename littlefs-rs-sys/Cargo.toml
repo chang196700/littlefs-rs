@@ -17,5 +17,6 @@ version = "0.63.0"
 
 [features]
 default = []
+nolib = []
 assertions = []
 trace = []

@@ -33,6 +33,7 @@ dir-entry-path = []
 ll-assertions = ["littlefs-rs-sys/assertions"]
 # enable trace in backend C code
 ll-trace = ["littlefs-rs-sys/trace"]
+ll-nolib = ["littlefs-rs-sys/nolib"]
 c-stubs = []
 
 log-all = []

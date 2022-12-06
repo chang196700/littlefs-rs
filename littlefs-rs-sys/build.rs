@@ -2,26 +2,28 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() -> anyhow::Result<()> {
-    let mut builder = cc::Build::new();
     let target = env::var("CLANG_TARGET")
         .or_else(|_| env::var("TARGET"))?;
 
-    let builder = builder
-        .flag("-std=c11")
-        .flag("-DLFS_NO_MALLOC")
-        .flag("-DLFS_NO_DEBUG")
-        .flag("-DLFS_NO_WARN")
-        .flag("-DLFS_NO_ERROR")
-        .file("littlefs/lfs.c")
-        .file("littlefs/lfs_util.c");
+    if cfg!(not(feature = "nolib")) {
+        let mut builder = cc::Build::new();
+        let builder = builder
+            .flag("-std=c11")
+            .flag("-DLFS_NO_MALLOC")
+            .flag("-DLFS_NO_DEBUG")
+            .flag("-DLFS_NO_WARN")
+            .flag("-DLFS_NO_ERROR")
+            .file("littlefs/lfs.c")
+            .file("littlefs/lfs_util.c");
 
-    #[cfg(not(feature = "assertions"))]
-        let builder = builder.flag("-DLFS_NO_ASSERT");
+        #[cfg(not(feature = "assertions"))]
+            let builder = builder.flag("-DLFS_NO_ASSERT");
 
-    #[cfg(feature = "trace")]
-        let builder = builder.flag("-DLFS_YES_TRACE");
+        #[cfg(feature = "trace")]
+            let builder = builder.flag("-DLFS_YES_TRACE");
 
-    builder.compile("lfs-sys");
+        builder.compile("lfs-sys");
+    }
 
     let bindings = bindgen::Builder::default()
         .header("littlefs/lfs.h")
