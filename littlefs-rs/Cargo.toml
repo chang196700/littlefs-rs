@@ -29,12 +29,12 @@ default-features = false
 default = ["dir-entry-path", "serde"]
 # use experimental closure-based API
 dir-entry-path = []
-# enable assertions in backend C code
-ll-assertions = ["littlefs-rs-sys/assertions"]
-# enable trace in backend C code
-ll-trace = ["littlefs-rs-sys/trace"]
-ll-nolib = ["littlefs-rs-sys/nolib"]
 c-stubs = []
+
+ll-assert = ["littlefs-rs-sys/assert"]
+ll-trace = ["littlefs-rs-sys/trace"]
+ll-no_lib = ["littlefs-rs-sys/no_lib"]
+ll-malloc = ["littlefs-rs-sys/malloc"]
 
 log-all = []
 log-none = []

@@ -17,6 +17,10 @@ version = "0.63.0"
 
 [features]
 default = []
-nolib = []
-assertions = []
+no_lib = []
+assert = []
 trace = []
+malloc = []
+debug = []
+warn = []
+error = []
