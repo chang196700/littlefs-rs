@@ -3,7 +3,8 @@ use std::path::PathBuf;
 
 fn main() -> anyhow::Result<()> {
     let mut builder = cc::Build::new();
-    let target = env::var("TARGET")?;
+    let target = env::var("CLANG_TARGET")
+        .or_else(|_| env::var("TARGET"))?;
 
     let builder = builder
         .flag("-std=c11")
