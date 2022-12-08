@@ -1,5 +1,6 @@
 use std::env;
 use std::path::PathBuf;
+use bindgen::EnumVariation;
 
 fn main() -> anyhow::Result<()> {
     println!("cargo:rerun-if-changed=build.rs");
@@ -49,18 +50,18 @@ fn main() -> anyhow::Result<()> {
         .clang_arg(format!("--target={}", target))
         .use_core()
         .ctypes_prefix("cty")
+        .rustified_enum("lfs_error")
         .rustfmt_bindings(true)
-        .generate();
+        .fit_macro_constants(true)
+        .default_enum_style(EnumVariation::NewType { is_bitfield: true, is_global: false })
+        .derive_default(true)
+        .generate()?;
 
-    if let Ok(bindings) = bindings {
-        let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
-        bindings
-            .write_to_file(out_path.join("bindings.rs"))
-            .expect("Couldn't write bindings!");
-    } else {
-        eprintln!("WARNING: No bindings generated!");
-        eprintln!("Error: {:?}", bindings);
-    }
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    bindings
+        .write_to_file(out_path.join("bindings.rs"))
+        .expect("Couldn't write bindings!");
 
     Ok(())
 }
