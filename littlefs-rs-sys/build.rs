@@ -34,6 +34,11 @@ fn main() -> anyhow::Result<()> {
             builder.flag(&format!("-D{}", def));
         }
 
+        let flags = env::var("CFLAGS").unwrap_or_default();
+        for flag in flags.lines() {
+            builder.flag(flag);
+        }
+
         builder.compile("lfs-sys");
     }
 
